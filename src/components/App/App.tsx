@@ -1,10 +1,11 @@
-import React from 'react';
-import TodoItem from './components/TodoItem';
-import { ITodo } from './interface';
+import { ITodo } from '../../interfaces/interface';
+import TodoItem from '../TodoItem/TodoItem';
+import styles from './app.module.css';
 
 function App() {
   return (
-    <div className = 'bg-gray-900 h-screen text-white'>
+    <div style={{color: 'rgb(255 255 255)'}}>
+      <h1 className = {styles.title}>Tasks</h1>
       { 
         todos.map(todo => (
           <TodoItem
