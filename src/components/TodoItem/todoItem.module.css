@@ -7,6 +7,8 @@
   border: 1px solid #ccc;
   width: 500px;
   border-radius: 10px;
+  background-color: #1e293b;
+  box-shadow: rgba(141, 141, 141, 0.24) 0px 3px 8px;
 }
 
 .check {
