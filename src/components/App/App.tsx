@@ -1,16 +1,34 @@
+import { useState } from 'react';
 import { ITodo } from '../../interfaces/interface';
 import TodoItem from '../TodoItem/TodoItem';
 import styles from './app.module.css';
 
 function App() {
+  const [todoItems, setTodoItems] = useState(todos);
+
+  function handleCompleted(id: number): void {
+    console.log('id: ', id);
+    
+    const newTodoItems = todoItems.map((todo) => {
+      if (id === todo.id) {
+        const qwe = { ...todo, isCompleted: !todo.isCompleted };
+        console.log('todo: ', qwe);
+        return qwe;
+      }
+      return todo;
+    });
+    setTodoItems(newTodoItems);
+  }
+
   return (
     <div style={{color: 'rgb(255 255 255)'}}>
       <h1 className = {styles.title}>Tasks</h1>
       { 
-        todos.map(todo => (
+        todoItems.map(todo => (
           <TodoItem
             key = { todo.id }
             todo = { todo } 
+            changeTodo={handleCompleted}
           />
         ))
       }

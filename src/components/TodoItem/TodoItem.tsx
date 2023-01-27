@@ -3,14 +3,16 @@ import Check from '../Check/Check';
 import styles from './todoItem.module.css';
 
 function TodoItem(props: IPropsForTodoItem) {
-  const { todo } = props;
+  const { todo, changeTodo } = props;
   
   return ( 
     <div className={styles.container}>
       <div className={styles.check}>
-        <Check todo={todo}/>
+        <button onClick={() => changeTodo(todo.id)}>
+          <Check todo={todo} />
+        </button>
       </div>
-      <div>
+      <div className={ todo.isCompleted ? styles.isOn : styles.isOff}>
         <span>{ todo.title }</span>
       </div>
     </div>
@@ -18,3 +20,4 @@ function TodoItem(props: IPropsForTodoItem) {
 }
 
 export default TodoItem
+
