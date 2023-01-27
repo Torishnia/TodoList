@@ -1,0 +1,15 @@
+.container {
+  margin: 10px auto;
+  padding: 5px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  border: 1px solid #ccc;
+  width: 500px;
+  border-radius: 10px;
+}
+
+.check {
+  margin-left: 10px;
+  margin-right: 15px;
+}
