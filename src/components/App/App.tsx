@@ -7,28 +7,28 @@ function App() {
   const [todoItems, setTodoItems] = useState(todos);
 
   function handleCompleted(id: number): void {
-    console.log('id: ', id);
-    
     const newTodoItems = todoItems.map((todo) => {
-      if (id === todo.id) {
-        const qwe = { ...todo, isCompleted: !todo.isCompleted };
-        console.log('todo: ', qwe);
-        return qwe;
-      }
+      if (id === todo.id) return { ...todo, isCompleted: !todo.isCompleted };
       return todo;
     });
     setTodoItems(newTodoItems);
   }
 
+  function removeTodo(id: number): void {
+    const newTodoItem = todoItems.filter((todo) => todo.id !== id);
+    setTodoItems(newTodoItem);
+  }
+
   return (
-    <div style={{color: 'rgb(255 255 255)'}}>
-      <h1 className = {styles.title}>Tasks</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Tasks</h1>
       { 
         todoItems.map(todo => (
           <TodoItem
-            key = { todo.id }
-            todo = { todo } 
+            key={todo.id}
+            todo={todo} 
             changeTodo={handleCompleted}
+            removeTodo={removeTodo}
           />
         ))
       }

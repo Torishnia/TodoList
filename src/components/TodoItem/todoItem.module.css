@@ -2,13 +2,23 @@
   margin: 10px auto;
   padding: 5px;
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
   border: 1px solid #ccc;
-  width: 500px;
+  min-width: 290px;
+  max-width: 700px;
   border-radius: 10px;
   background-color: #1e293b;
   box-shadow: rgba(141, 141, 141, 0.24) 0px 3px 8px;
+}
+
+.leftPart {
+  display: flex;
+  padding: auto 5px;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  width: 75%;
 }
 
 .check {
@@ -26,4 +36,21 @@
 
 .isOff {
   text-decoration: none;
+}
+
+.rightPart {
+  display: flex;
+  padding: auto 5px;
+  flex-direction: row;
+  justify-content: center;
+  width: 25%;
+}
+
+.edit, .trash {
+  margin: auto 5px;
+  color: #475569;
+}
+
+.edit:hover, .trash :hover {
+  color: #f472b6;
 }
