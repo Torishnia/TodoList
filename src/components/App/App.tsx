@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { ITodo } from '../../interfaces/interface';
+
 import CreateTodoField from '../CreateTodoField/CreateTodoField';
 import TodoItem from '../TodoItem/TodoItem';
+import { todos } from '../../data';
 import styles from './app.module.css';
 
 function App() {
   const [todoItems, setTodoItems] = useState(todos);
 
-  function handleCompleted(id: number): void {
+  function moveToCompleted(id: number): void {
     const newTodoItems = todoItems.map((todo) => {
-      if (id === todo.id) return { ...todo, isCompleted: !todo.isCompleted };
-      return todo;
+      if (id !== todo.id) return todo;
+      return { ...todo, isCompleted: !todo.isCompleted };
     });
     setTodoItems(newTodoItems);
   }
@@ -28,11 +29,11 @@ function App() {
         todoItems={todoItems}
       />
       { 
-        todoItems.map(todo => (
+        todoItems.map((todo) => (
           <TodoItem
             key={todo.id}
             todo={todo} 
-            changeTodo={handleCompleted}
+            moveToCompleted={moveToCompleted}
             removeTodo={removeTodo}
           />
         ))
@@ -40,25 +41,5 @@ function App() {
     </div>
   );
 }
-
-let todos: ITodo[];
-
-todos = [
-  { 
-    id: 1,
-    title: 'Finish the essay collaboration', 
-    isCompleted: false 
-  },
-  { 
-    id: 2,
-    title: 'Read next chapter of the book', 
-    isCompleted: false 
-  },
-  { 
-    id: 3,
-    title: 'Send the finished assignment', 
-    isCompleted: false 
-  },
-];
 
 export default App;

@@ -4,7 +4,7 @@ export interface IPropsTodo {
 
 export interface IPropsForTodoItem extends IPropsTodo {
   removeTodo: Function;
-  changeTodo: Function;
+  moveToCompleted: Function;
 }
 
 export interface IPropsForCheck extends IPropsTodo {
