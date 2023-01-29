@@ -1,11 +1,12 @@
-import { IPropsForTodoItem } from '../../interfaces/interface';
-import Check from '../Check/Check';
-import styles from './todoItem.module.css';
 import { GoTrashcan } from 'react-icons/go';
 import { FiEdit } from 'react-icons/fi';
 
+import { IPropsForTodoItem } from '../../interfaces/interface';
+import Check from '../Check/Check';
+import styles from './todoItem.module.css';
+
 function TodoItem(props: IPropsForTodoItem) {
-  const { todo, changeTodo, removeTodo } = props;
+  const { todo, moveToCompleted, removeTodo } = props;
   const { id, title, isCompleted } = todo;
   const sizeForIcon = 22;
   
@@ -13,7 +14,7 @@ function TodoItem(props: IPropsForTodoItem) {
     <div className={styles.container}>
       <div className={styles.leftPart}>
         <div className={styles.check}>
-          <button onClick={() => changeTodo(id)}>
+          <button onClick={() => moveToCompleted(id)}>
             <Check todo={todo} />
           </button>
         </div>
@@ -29,7 +30,7 @@ function TodoItem(props: IPropsForTodoItem) {
         </div>
         <div className={styles.trash}>
           <button onClick={() => removeTodo(id)}>
-            <GoTrashcan size={sizeForIcon}/>
+            <GoTrashcan size={sizeForIcon} />
           </button>
         </div>
       </div>
@@ -37,5 +38,4 @@ function TodoItem(props: IPropsForTodoItem) {
   )
 }
 
-export default TodoItem
-
+export default TodoItem;

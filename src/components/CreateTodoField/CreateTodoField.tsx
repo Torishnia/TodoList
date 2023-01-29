@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { IPropsForCreateTodoField } from '../../interfaces/interface';
-import styles  from './create-todo-field.module.css';
+import { useState } from 'react';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { ImCancelCircle } from 'react-icons/im';
+
+import { IPropsForCreateTodoField } from '../../interfaces/interface';
+import styles  from './create-todo-field.module.css';
 
 function CreateTodoField(props: IPropsForCreateTodoField) {
 const { todoItems, setTodoItems } = props;
@@ -10,6 +11,7 @@ const [title, setTitle] = useState('');
 const sizeBtn = 22;
 
 function addTodo(title: string): void {
+  if (!title.trim()) return;
   setTodoItems([
     {
       id: +new Date(),
@@ -54,4 +56,3 @@ function emptyInput(): void {
 }
 
 export default CreateTodoField;
-
