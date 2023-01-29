@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ITodo } from '../../interfaces/interface';
+import CreateTodoField from '../CreateTodoField/CreateTodoField';
 import TodoItem from '../TodoItem/TodoItem';
 import styles from './app.module.css';
 
@@ -22,6 +23,10 @@ function App() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Tasks</h1>
+      <CreateTodoField 
+        setTodoItems={setTodoItems} 
+        todoItems={todoItems}
+      />
       { 
         todoItems.map(todo => (
           <TodoItem

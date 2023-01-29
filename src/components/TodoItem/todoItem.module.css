@@ -51,6 +51,7 @@
   color: #475569;
 }
 
-.edit:hover, .trash :hover {
+.edit:hover, .trash:hover {
   color: #f472b6;
+  transition: ease-in-out 300ms;
 }

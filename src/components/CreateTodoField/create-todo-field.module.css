@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 100%;
+  min-width: 290px;
+  min-height: 45px;
+  max-width: 700px;
+  margin: 10px auto;
+  padding: 5px;
+  box-sizing: border-box;
+  margin-bottom: 50px;
+}
+
+.leftPart {
+  width: 75%;
+  display: flex;
+  justify-content: start;
+  padding: auto 5px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.input {
+  width: 600px;
+  min-width: 200px;
+  max-width: 100%;
+  padding: auto 10px;
+  outline: none;
+  background: transparent;
+  margin-left: 5px;
+}
+
+.rightPart {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: auto 5px;
+  width: 25%;
+}
+
+.saveBtn, .cancelBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto 5px;
+  color: #475569;
+}
+
+.saveBtn:hover, .cancelBtn:hover {
+  color: #f472b6;
+  transition: ease-in-out 300ms;
+}

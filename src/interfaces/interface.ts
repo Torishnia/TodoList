@@ -10,6 +10,11 @@ export interface IPropsForTodoItem extends IPropsTodo {
 export interface IPropsForCheck extends IPropsTodo {
 }
 
+export interface IPropsForCreateTodoField {
+  setTodoItems: Function;
+  todoItems: ITodo[];
+}
+
 export interface ITodo {
   id: number;
   title: string;
