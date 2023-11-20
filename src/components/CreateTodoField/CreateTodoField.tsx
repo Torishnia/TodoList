@@ -1,52 +1,81 @@
-import { useState } from 'react';
-import { HiOutlinePlusCircle } from 'react-icons/hi';
+import { HiOutlinePlusCircle, HiOutlineCheckCircle } from 'react-icons/hi';
 import { ImCancelCircle } from 'react-icons/im';
 
-import styles  from './create-todo-field.module.css';
 import { IPropsForCreateTodoField } from '../../interfaces/interface';
+import styles  from './create-todo-field.module.css';
 
 function CreateTodoField(props: IPropsForCreateTodoField) {
-const { todoItems, setTodoItems } = props;
-const [title, setTitle] = useState('');
+const {
+  currTitleTodo,
+  setCurrTitleTodo,
+  editIdTodo,
+  setEditIdTodo,
+  todoItems,
+  setTodoItems,
+ } = props;
 const sizeBtn = 22;
 
-function addTodo(title: string): void {
-  if (!title.trim()) return;
-  setTodoItems([
-    {
-      id: +new Date(),
-      title,
-      isCompleted: false,
-    },
-    ...todoItems, 
-  ]);
+function createOrUpdateTodo(): void {
+  if (!currTitleTodo.trim()) return;
+
+  const todoForSave = {
+    id: editIdTodo || +new Date(),
+    title: currTitleTodo,
+    isCompleted: false,
+  };
+
+  const todoListForSave = editIdTodo
+    ? [todoForSave, ...todoItems.filter((item) => item.id !== editIdTodo)]
+    : [todoForSave, ...todoItems];
+
+  setTodoItems(todoListForSave);
   emptyInput();
 }
 
 function emptyInput(): void {
-  setTitle('');
+  setCurrTitleTodo('');
+  setEditIdTodo(null);
+}
+
+function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+  const { key } = event;
+  if (key !== "Enter") return;
+  createOrUpdateTodo();
 }
 
   return (
+    // Creating or Updating Input 
     <div className={styles.container}>
+
+      {/* Input Field */}
       <div className={styles.leftPart}>
         <input 
           className={styles.input}
           type='text'
-          onChange={event => setTitle(event.target.value)}
-          value={title}
-          onKeyPress={event => event.key === 'Enter' && addTodo(title)}
+          onChange={event => setCurrTitleTodo(event.target.value)}
+          value={currTitleTodo}
+          onKeyDown={handleKeyPress}
           placeholder='Add a task'
         />
       </div>
+
+      {/* Process btns */}
       <div className={styles.rightPart}>
+
+        {/* Add / Update btn */}
         <div className={styles.saveBtn}>
-          <button onClick={() => addTodo(title)}>
-            <HiOutlinePlusCircle size={sizeBtn + 5} />
+          <button onClick={createOrUpdateTodo}>
+            {
+              editIdTodo
+                ? <HiOutlineCheckCircle size={sizeBtn + 5} />
+                : <HiOutlinePlusCircle size={sizeBtn + 5} />
+            }
           </button>
         </div>
+
+        {/* Cancel btn */}
         <div className={styles.cancelBtn}>
-          <button onClick={() => emptyInput()}>
+          <button onClick={emptyInput}>
             <ImCancelCircle size={sizeBtn} />
           </button>
         </div>

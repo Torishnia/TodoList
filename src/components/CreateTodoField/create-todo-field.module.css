@@ -17,7 +17,7 @@
 .leftPart {
   width: 75%;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   padding: auto 5px;
   flex-direction: row;
   align-items: center;

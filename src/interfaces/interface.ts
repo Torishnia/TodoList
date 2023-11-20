@@ -5,6 +5,7 @@ export interface IPropsTodo {
 export interface IPropsForTodoItem extends IPropsTodo {
   removeTodo: Function;
   moveToCompleted: Function;
+  editTodo: Function;
 }
 
 export interface IPropsForCheck extends IPropsTodo {
@@ -13,6 +14,10 @@ export interface IPropsForCheck extends IPropsTodo {
 export interface IPropsForCreateTodoField {
   setTodoItems: Function;
   todoItems: ITodo[];
+  currTitleTodo: string;
+  editIdTodo: number | null;
+  setCurrTitleTodo: Function;
+  setEditIdTodo: Function;
 }
 
 export interface ITodo {
