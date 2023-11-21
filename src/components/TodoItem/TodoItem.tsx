@@ -6,13 +6,13 @@ import { IPropsForTodoItem } from '../../interfaces/interface';
 import styles from './todoItem.module.css';
 
 function TodoItem(props: IPropsForTodoItem) {
-  const { todo, moveToCompleted, removeTodo, editTodo } = props;
+  const { todo, moveToCompleted, removeTodo, editTodo, editIdTodo } = props;
   const { id, title, isCompleted } = todo;
   const sizeForIcon = 22;
   
   return (
     // Todo Item component
-    <div className={styles.container}>
+    <div className={`${styles.container} ${editIdTodo === todo.id ? styles.container_border : ''}`}>
       <div className={styles.leftPart}>
 
         {/* Checkbox for completed */}

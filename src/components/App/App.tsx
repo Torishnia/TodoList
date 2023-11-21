@@ -57,6 +57,7 @@ function App() {
             moveToCompleted={moveToCompleted}
             removeTodo={removeTodo}
             editTodo={editTodo}
+            editIdTodo={editIdTodo}
           />
         ))
       }

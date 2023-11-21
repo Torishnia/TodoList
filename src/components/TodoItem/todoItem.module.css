@@ -12,6 +12,10 @@
   box-shadow: #8d8d8d3d 0px 3px 8px;
 }
 
+.container_border {
+  border: 2px solid #60cbe9;
+}
+
 .leftPart {
   display: flex;
   padding: auto 5px;
