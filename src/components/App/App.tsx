@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import CreateTodoField from '../CreateTodoField/CreateTodoField';
@@ -10,6 +10,16 @@ function App() {
   const [todoItems, setTodoItems] = useState(todos);
   const [currTitleTodo, setCurrTitleTodo] = useState<string>('');
   const [editIdTodo, setEditIdTodo] = useState<number | null>(null);
+
+  // Loading todo from localStorage when mounting component
+  useEffect(() => {
+    const storedUserTodos = localStorage.getItem('todoItems');
+
+    if (storedUserTodos) {
+      const parsedTodos = JSON.parse(storedUserTodos);
+      setTodoItems(parsedTodos);
+    }
+  }, [])
 
   function moveToCompleted(id: number): void {
     const newTodoItems = todoItems.map((todo) => {

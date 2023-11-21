@@ -30,6 +30,9 @@ function createOrUpdateTodo(): void {
 
   setTodoItems(todoListForSave);
   emptyInput();
+
+  // Saving todo in localStorage when todoItems change
+  localStorage.setItem('todoItems', JSON.stringify(todoListForSave));
 }
 
 function emptyInput(): void {
