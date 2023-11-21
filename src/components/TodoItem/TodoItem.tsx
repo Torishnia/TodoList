@@ -1,5 +1,6 @@
 import { GoTrashcan } from 'react-icons/go';
 import { FiEdit } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
 import Check from '../Check/Check';
 import { IPropsForTodoItem } from '../../interfaces/interface';
@@ -12,7 +13,14 @@ function TodoItem(props: IPropsForTodoItem) {
   
   return (
     // Todo Item component
-    <div className={`${styles.container} ${editIdTodo === todo.id ? styles.container_border : ''}`}>
+    <motion.div
+      layout
+      exit={{ y: -30, opacity: 0 }}
+      className={`
+        ${styles.container} 
+        ${editIdTodo === todo.id ? styles.container_border : ''}
+      `}
+    >
       <div className={styles.leftPart}>
 
         {/* Checkbox for completed */}
@@ -46,7 +54,7 @@ function TodoItem(props: IPropsForTodoItem) {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

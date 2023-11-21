@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import CreateTodoField from '../CreateTodoField/CreateTodoField';
 import TodoItem from '../TodoItem/TodoItem';
@@ -49,18 +50,33 @@ function App() {
       />
 
       {/* Result Todos Component */}
-      { 
-        todoItems.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo} 
-            moveToCompleted={moveToCompleted}
-            removeTodo={removeTodo}
-            editTodo={editTodo}
-            editIdTodo={editIdTodo}
-          />
-        ))
-      }
+      <AnimatePresence mode='wait'>
+        {todoItems.length > 0
+          ? (
+              <AnimatePresence>
+                {todoItems.map((todo) => (
+                  <TodoItem
+                    key={todo.id}
+                    todo={todo} 
+                    moveToCompleted={moveToCompleted}
+                    removeTodo={removeTodo}
+                    editTodo={editTodo}
+                    editIdTodo={editIdTodo}
+                  />
+                ))}
+              </AnimatePresence>
+            )
+          : <motion.p
+              key='fallback'
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              style={{textAlign: 'center'}}
+            >
+              No todos found.
+            </motion.p>
+        }
+      </AnimatePresence>
 
     </div>
   );
