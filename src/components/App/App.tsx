@@ -71,16 +71,18 @@ function App() {
         {todoItems.length > 0
           ? (
               <AnimatePresence>
-                {todoItems.map((todo) => (
-                  <TodoItem
-                    key={todo.id}
-                    todo={todo} 
-                    handleComplete={handleComplete}
-                    removeTodo={removeTodo}
-                    editTodo={editTodo}
-                    editIdTodo={editIdTodo}
-                  />
-                ))}
+                <div className={styles.content_todo}>
+                  {todoItems.map((todo) => (
+                    <TodoItem
+                      key={todo.id}
+                      todo={todo} 
+                      handleComplete={handleComplete}
+                      removeTodo={removeTodo}
+                      editTodo={editTodo}
+                      editIdTodo={editIdTodo}
+                    />
+                  ))}
+                </div>
               </AnimatePresence>
             )
           : <motion.p
