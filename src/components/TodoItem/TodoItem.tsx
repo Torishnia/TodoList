@@ -7,7 +7,7 @@ import { IPropsForTodoItem } from '../../interfaces/interface';
 import styles from './todoItem.module.css';
 
 function TodoItem(props: IPropsForTodoItem) {
-  const { todo, moveToCompleted, removeTodo, editTodo, editIdTodo } = props;
+  const { todo, handleComplete, removeTodo, editTodo, editIdTodo } = props;
   const { id, title, isCompleted } = todo;
   const sizeForIcon = 22;
   
@@ -25,7 +25,7 @@ function TodoItem(props: IPropsForTodoItem) {
 
         {/* Checkbox for completed */}
         <div className={styles.check}>
-          <button onClick={() => moveToCompleted(id)}>
+          <button onClick={() => handleComplete(id)}>
             <Check todo={todo} />
           </button>
         </div>

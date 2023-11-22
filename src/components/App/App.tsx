@@ -3,11 +3,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import CreateTodoField from '../CreateTodoField/CreateTodoField';
 import TodoItem from '../TodoItem/TodoItem';
-import { todos } from '../../data';
+import { ITodo } from '../../interfaces/interface';
 import styles from './app.module.css';
 
+
 function App() {
-  const [todoItems, setTodoItems] = useState(todos);
+  const [todoItems, setTodoItems] = useState<ITodo[]>([]);
   const [currTitleTodo, setCurrTitleTodo] = useState<string>('');
   const [editIdTodo, setEditIdTodo] = useState<number | null>(null);
 
@@ -21,12 +22,15 @@ function App() {
     }
   }, [])
 
-  function moveToCompleted(id: number): void {
-    const newTodoItems = todoItems.map((todo) => {
+  function handleComplete(id: number): void {
+    const result = todoItems.map((todo) => {
       if (id !== todo.id) return todo;
       return { ...todo, isCompleted: !todo.isCompleted };
     });
-    setTodoItems(newTodoItems);
+    setTodoItems(result);
+
+    // Update todoItems in localStorage
+    localStorage.setItem('todoItems', JSON.stringify(result));
   }
 
   function editTodo(id: number): void {
@@ -38,8 +42,11 @@ function App() {
   }
 
   function removeTodo(id: number): void {
-    const newTodoItem = todoItems.filter((todo) => todo.id !== id);
-    setTodoItems(newTodoItem);
+    const result = todoItems.filter((todo) => todo.id !== id);
+    setTodoItems(result);
+
+    // Update todoItems in localStorage
+    localStorage.setItem('todoItems', JSON.stringify(result));
   }
 
   return (
@@ -68,7 +75,7 @@ function App() {
                   <TodoItem
                     key={todo.id}
                     todo={todo} 
-                    moveToCompleted={moveToCompleted}
+                    handleComplete={handleComplete}
                     removeTodo={removeTodo}
                     editTodo={editTodo}
                     editIdTodo={editIdTodo}
