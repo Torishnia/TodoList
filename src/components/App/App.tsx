@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { DotLoader } from 'react-spinners';
 import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
 
@@ -12,6 +13,7 @@ function App() {
   const [todoItems, setTodoItems] = useState<ITodo[]>([]);
   const [currTitleTodo, setCurrTitleTodo] = useState<string>('');
   const [editIdTodo, setEditIdTodo] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getAllTodo() {
@@ -19,6 +21,7 @@ function App() {
         const response = await axios.get('https://todo-list-api-vercel-iota.vercel.app/all');
         const todos = response.data;
         setTodoItems(todos);
+        setIsLoading(false);
         
       } catch (error) {
         console.error('Error fetching todos:', error);
@@ -82,36 +85,40 @@ function App() {
       />
 
       {/* Result Todos Component */}
-      <AnimatePresence mode='wait'>
-        {todoItems.length > 0
-          ? (
-              <AnimatePresence>
-                <div className={styles.content_todo}>
-                  {todoItems.map((todo) => (
-                    <TodoItem
-                      key={todo._id}
-                      todo={todo} 
-                      handleComplete={handleComplete}
-                      removeTodo={removeTodo}
-                      editTodo={editTodo}
-                      editIdTodo={editIdTodo}
-                    />
-                  ))}
-                </div>
-              </AnimatePresence>
-            )
-          : <motion.p
-              key='fallback'
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              style={{textAlign: 'center'}}
-            >
-              No todos found.
-            </motion.p>
-        }
-      </AnimatePresence>
-
+      {isLoading
+        ? <DotLoader color="#f472b6" cssOverride={{margin: '0 auto'}} />
+        : ( 
+            <AnimatePresence mode='wait'>
+              {todoItems.length > 0
+                ? (
+                    <AnimatePresence>
+                      <div className={styles.content_todo}>
+                        {todoItems.map((todo) => (
+                          <TodoItem
+                            key={todo._id}
+                            todo={todo} 
+                            handleComplete={handleComplete}
+                            removeTodo={removeTodo}
+                            editTodo={editTodo}
+                            editIdTodo={editIdTodo}
+                          />
+                        ))}
+                      </div>
+                    </AnimatePresence>
+                  )
+                : <motion.p
+                    key='fallback'
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    style={{textAlign: 'center'}}
+                  >
+                    No todos found.
+                  </motion.p>
+              }
+            </AnimatePresence>
+          )
+      }
     </div>
   );
 }
