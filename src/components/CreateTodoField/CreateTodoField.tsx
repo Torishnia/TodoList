@@ -1,7 +1,8 @@
 import { HiOutlinePlusCircle, HiOutlineCheckCircle } from 'react-icons/hi';
 import { ImCancelCircle } from 'react-icons/im';
+import axios from 'axios';
 
-import { IPropsForCreateTodoField } from '../../interfaces/interface';
+import { IPropsForCreateTodoField, ITodo } from '../../interfaces/interface';
 import styles  from './create-todo-field.module.css';
 
 function CreateTodoField(props: IPropsForCreateTodoField) {
@@ -15,24 +16,40 @@ const {
  } = props;
 const sizeBtn = 22;
 
-function createOrUpdateTodo(): void {
+async function createTodo() {
   if (!currTitleTodo.trim()) return;
+  
+  try {
+    const response = await axios.post('https://todo-list-api-vercel-iota.vercel.app/create', {
+      title: currTitleTodo,
+      isCompleted: false,
+    });
+    const newTodo = response.data;
 
-  const todoForSave = {
-    id: editIdTodo || +new Date(),
-    title: currTitleTodo,
-    isCompleted: false,
-  };
+    setTodoItems((prevItems: ITodo[]) => [newTodo, ...prevItems]);
+    setCurrTitleTodo('');
+    emptyInput();
+  } catch (error) {
+    console.error('Error fetching todos:', error);
+  }
+}
 
-  const todoListForSave = editIdTodo
-    ? [todoForSave, ...todoItems.filter((item) => item.id !== editIdTodo)]
-    : [todoForSave, ...todoItems];
+async function updateTodoTitle(id: number) {
+  if (!currTitleTodo.trim()) return;
+  
+  try {
+    const response = await axios.patch(`https://todo-list-api-vercel-iota.vercel.app/update/${id}`, {
+      title: currTitleTodo,
+    })
+    
+    const updatedTodo = response.data;
+    const result = [updatedTodo, ...todoItems.filter((item) => item._id !== editIdTodo)];
 
-  setTodoItems(todoListForSave);
-  emptyInput();
-
-  // Saving todo in localStorage when todoItems change
-  localStorage.setItem('todoItems', JSON.stringify(todoListForSave));
+    setTodoItems(result);
+    emptyInput();
+  } catch (error) {
+    console.error('Error editing todo:', error);
+  }
 }
 
 function emptyInput(): void {
@@ -43,7 +60,11 @@ function emptyInput(): void {
 function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
   const { key } = event;
   if (key !== "Enter") return;
-  createOrUpdateTodo();
+  if (editIdTodo) {
+    updateTodoTitle(editIdTodo);
+  } else {
+    createTodo();
+  }
 }
 
   return (
@@ -67,13 +88,10 @@ function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
 
         {/* Add / Update btn */}
         <div className={styles.saveBtn}>
-          <button onClick={createOrUpdateTodo}>
-            {
-              editIdTodo
-                ? <HiOutlineCheckCircle size={sizeBtn + 5} />
-                : <HiOutlinePlusCircle size={sizeBtn + 5} />
-            }
-          </button>
+          {!editIdTodo
+            ? <button onClick={createTodo}><HiOutlinePlusCircle size={sizeBtn + 5} /></button>
+            : <button onClick={() => updateTodoTitle(editIdTodo)}><HiOutlineCheckCircle size={sizeBtn + 5} /></button>
+          }
         </div>
 
         {/* Cancel btn */}

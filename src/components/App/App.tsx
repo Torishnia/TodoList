@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import axios from 'axios';
 
 import CreateTodoField from '../CreateTodoField/CreateTodoField';
 import TodoItem from '../TodoItem/TodoItem';
@@ -12,41 +13,55 @@ function App() {
   const [currTitleTodo, setCurrTitleTodo] = useState<string>('');
   const [editIdTodo, setEditIdTodo] = useState<number | null>(null);
 
-  // Loading todo from localStorage when mounting component
   useEffect(() => {
-    const storedUserTodos = localStorage.getItem('todoItems');
-
-    if (storedUserTodos) {
-      const parsedTodos = JSON.parse(storedUserTodos);
-      setTodoItems(parsedTodos);
+    async function getAllTodo() {
+      try {
+        const response = await axios.get('https://todo-list-api-vercel-iota.vercel.app/all');
+        const todos = response.data;
+        setTodoItems(todos);
+        
+      } catch (error) {
+        console.error('Error fetching todos:', error);
+      }
     }
-  }, [])
+
+    getAllTodo();
+  },[])
 
   function handleComplete(id: number): void {
-    const result = todoItems.map((todo) => {
-      if (id !== todo.id) return todo;
-      return { ...todo, isCompleted: !todo.isCompleted };
+    const updatedTodoItems = todoItems.map((todo) => {
+      if (id !== todo._id) return todo;
+  
+      const updatedTodo = { ...todo, isCompleted: !todo.isCompleted };
+  
+      axios.patch(`https://todo-list-api-vercel-iota.vercel.app/update/${id}`, {
+        isCompleted: updatedTodo.isCompleted,
+      })
+  
+      return updatedTodo;
     });
-    setTodoItems(result);
 
-    // Update todoItems in localStorage
-    localStorage.setItem('todoItems', JSON.stringify(result));
+    setTodoItems(updatedTodoItems);
   }
 
-  function editTodo(id: number): void {
-    const itemForEdit = todoItems.find((item) => item.id === id);
+  function editTodo(id: number) {
+    const itemForEdit = todoItems.find((item) => item._id === id);
     if (!itemForEdit) return;
     
-    setEditIdTodo(itemForEdit.id);
+    setEditIdTodo(itemForEdit._id);
     setCurrTitleTodo(itemForEdit.title);
   }
 
-  function removeTodo(id: number): void {
-    const result = todoItems.filter((todo) => todo.id !== id);
-    setTodoItems(result);
-
-    // Update todoItems in localStorage
-    localStorage.setItem('todoItems', JSON.stringify(result));
+  async function removeTodo(id: number) {
+    await axios.delete(`https://todo-list-api-vercel-iota.vercel.app/remove/${id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res);
+          const result = todoItems.filter((todo) => todo._id !== id);
+          setTodoItems(result);
+        }
+      })
+      .catch();
   }
 
   return (
@@ -74,7 +89,7 @@ function App() {
                 <div className={styles.content_todo}>
                   {todoItems.map((todo) => (
                     <TodoItem
-                      key={todo.id}
+                      key={todo._id}
                       todo={todo} 
                       handleComplete={handleComplete}
                       removeTodo={removeTodo}

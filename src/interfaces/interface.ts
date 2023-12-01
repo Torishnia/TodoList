@@ -22,7 +22,7 @@ export interface IPropsForCreateTodoField {
 }
 
 export interface ITodo {
-  id: number;
+  _id: number;
   title: string;
   isCompleted: boolean;
 }

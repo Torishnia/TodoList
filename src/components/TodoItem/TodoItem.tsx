@@ -8,7 +8,7 @@ import styles from './todoItem.module.css';
 
 function TodoItem(props: IPropsForTodoItem) {
   const { todo, handleComplete, removeTodo, editTodo, editIdTodo } = props;
-  const { id, title, isCompleted } = todo;
+  const { _id, title, isCompleted } = todo;
   const sizeForIcon = 22;
   
   return (
@@ -18,14 +18,14 @@ function TodoItem(props: IPropsForTodoItem) {
       exit={{ y: -30, opacity: 0 }}
       className={`
         ${styles.container} 
-        ${editIdTodo === todo.id ? styles.container_border : ''}
+        ${editIdTodo === todo._id ? styles.container_border : ''}
       `}
     >
       <div className={styles.leftPart}>
 
         {/* Checkbox for completed */}
         <div className={styles.check}>
-          <button onClick={() => handleComplete(id)}>
+          <button onClick={() => handleComplete(_id)}>
             <Check todo={todo} />
           </button>
         </div>
@@ -42,14 +42,14 @@ function TodoItem(props: IPropsForTodoItem) {
         
         {/* Edit btn */}
         <div className={styles.edit}>
-          <button onClick={() => editTodo(id)}>
+          <button onClick={() => editTodo(_id)}>
             <FiEdit size={sizeForIcon} />
           </button>
         </div>
 
         {/* Delete btn */}
         <div className={styles.trash}>
-          <button onClick={() => removeTodo(id)}>
+          <button onClick={() => removeTodo(_id)}>
             <GoTrashcan size={sizeForIcon} />
           </button>
         </div>
