@@ -2,7 +2,7 @@ import { HiOutlinePlusCircle, HiOutlineCheckCircle } from 'react-icons/hi';
 import { ImCancelCircle } from 'react-icons/im';
 
 import { IPropsForCreateTodoField, ITodo } from '../../interfaces/interface';
-import axios from '../../utils/axios';
+import TodoService from '../../services/TodoService';
 import styles  from './create-todo-field.module.css';
 
 function CreateTodoField(props: IPropsForCreateTodoField) {
@@ -18,38 +18,20 @@ const sizeBtn = 22;
 
 async function createTodo() {
   if (!currTitleTodo.trim()) return;
-  
-  try {
-    const response = await axios.post('/create', {
-      title: currTitleTodo,
-      isCompleted: false,
-    });
-    const newTodo = response.data;
+  const newTodo = await TodoService.createTodo(currTitleTodo);
 
-    setTodoItems((prevItems: ITodo[]) => [newTodo, ...prevItems]);
-    setCurrTitleTodo('');
-    emptyInput();
-  } catch (error) {
-    console.error('Error fetching todos:', error);
-  }
+  setTodoItems((prevItems: ITodo[]) => [newTodo, ...prevItems]);
+  setCurrTitleTodo('');
+  emptyInput();
 }
 
 async function updateTodoTitle(id: number) {
   if (!currTitleTodo.trim()) return;
-  
-  try {
-    const response = await axios.patch(`/update/${id}`, {
-      title: currTitleTodo,
-    })
-    
-    const updatedTodo = response.data;
-    const result = [updatedTodo, ...todoItems.filter((item) => item._id !== editIdTodo)];
+  const updatedTodo = await TodoService.updateTodoTitle(id, currTitleTodo);
+  const result = [updatedTodo, ...todoItems.filter((item) => item._id !== editIdTodo)];
 
-    setTodoItems(result);
-    emptyInput();
-  } catch (error) {
-    console.error('Error editing todo:', error);
-  }
+  setTodoItems(result);
+  emptyInput();
 }
 
 function emptyInput(): void {

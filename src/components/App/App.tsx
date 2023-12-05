@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { DotLoader } from 'react-spinners';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import CreateTodoField from '../CreateTodoField/CreateTodoField';
 import TodoItem from '../TodoItem/TodoItem';
 import { ITodo } from '../../interfaces/interface';
-import axios from '../../utils/axios';
+import TodoService from '../../services/TodoService';
 import styles from './app.module.css';
 
 function App() {
@@ -18,15 +18,9 @@ function App() {
 
   useEffect(() => {
     async function getAllTodo() {
-      try {
-        const response = await axios.get('/all');
-        const todos = response.data;
-        setTodoItems(todos);
-        setIsLoading(false);
-        
-      } catch (error) {
-        console.error('Error fetching todos:', error);
-      }
+      const todos =  await TodoService.getAllTodo();
+      setTodoItems(todos);
+      setIsLoading(false);
     }
 
     getAllTodo();
@@ -38,9 +32,7 @@ function App() {
   
       const updatedTodo = { ...todo, isCompleted: !todo.isCompleted };
   
-      axios.patch(`/update/${id}`, {
-        isCompleted: updatedTodo.isCompleted,
-      })
+      TodoService.updateTodoStatus(id, updatedTodo);
   
       return updatedTodo;
     });
@@ -57,35 +49,10 @@ function App() {
   }
 
   async function removeTodo(id: number) {
-    await axios.delete(`/remove/${id}`)
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success(res.data.message, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            });
+    await TodoService.deleteTodo(id);
+    const result = todoItems.filter((todo) => todo._id !== id);
 
-          const result = todoItems.filter((todo) => todo._id !== id);
-          setTodoItems(result);
-        }
-      })
-      .catch(() => toast.error('Failed to delete todo!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        })
-      );
+    setTodoItems(result);
   }
 
   return (
