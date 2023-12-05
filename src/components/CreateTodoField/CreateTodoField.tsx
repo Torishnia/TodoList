@@ -1,8 +1,8 @@
 import { HiOutlinePlusCircle, HiOutlineCheckCircle } from 'react-icons/hi';
 import { ImCancelCircle } from 'react-icons/im';
-import axios from 'axios';
 
 import { IPropsForCreateTodoField, ITodo } from '../../interfaces/interface';
+import axios from '../../utils/axios';
 import styles  from './create-todo-field.module.css';
 
 function CreateTodoField(props: IPropsForCreateTodoField) {
@@ -20,7 +20,7 @@ async function createTodo() {
   if (!currTitleTodo.trim()) return;
   
   try {
-    const response = await axios.post('https://todo-list-api-vercel-iota.vercel.app/create', {
+    const response = await axios.post('/create', {
       title: currTitleTodo,
       isCompleted: false,
     });
@@ -38,7 +38,7 @@ async function updateTodoTitle(id: number) {
   if (!currTitleTodo.trim()) return;
   
   try {
-    const response = await axios.patch(`https://todo-list-api-vercel-iota.vercel.app/update/${id}`, {
+    const response = await axios.patch(`/update/${id}`, {
       title: currTitleTodo,
     })
     

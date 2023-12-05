@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { DotLoader } from 'react-spinners';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 
 import CreateTodoField from '../CreateTodoField/CreateTodoField';
 import TodoItem from '../TodoItem/TodoItem';
 import { ITodo } from '../../interfaces/interface';
+import axios from '../../utils/axios';
 import styles from './app.module.css';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     async function getAllTodo() {
       try {
-        const response = await axios.get('https://todo-list-api-vercel-iota.vercel.app/all');
+        const response = await axios.get('/all');
         const todos = response.data;
         setTodoItems(todos);
         setIsLoading(false);
@@ -38,7 +38,7 @@ function App() {
   
       const updatedTodo = { ...todo, isCompleted: !todo.isCompleted };
   
-      axios.patch(`https://todo-list-api-vercel-iota.vercel.app/update/${id}`, {
+      axios.patch(`/update/${id}`, {
         isCompleted: updatedTodo.isCompleted,
       })
   
@@ -57,7 +57,7 @@ function App() {
   }
 
   async function removeTodo(id: number) {
-    await axios.delete(`https://todo-list-api-vercel-iota.vercel.app/remove/${id}`)
+    await axios.delete(`/remove/${id}`)
       .then((res) => {
         if (res.status === 200) {
           toast.success(res.data.message, {
