@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { DotLoader } from 'react-spinners';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
 
 import CreateTodoField from '../CreateTodoField/CreateTodoField';
 import TodoItem from '../TodoItem/TodoItem';
 import { ITodo } from '../../interfaces/interface';
 import styles from './app.module.css';
-
 
 function App() {
   const [todoItems, setTodoItems] = useState<ITodo[]>([]);
@@ -59,17 +60,38 @@ function App() {
     await axios.delete(`https://todo-list-api-vercel-iota.vercel.app/remove/${id}`)
       .then((res) => {
         if (res.status === 200) {
-          console.log(res);
+          toast.success(res.data.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
+
           const result = todoItems.filter((todo) => todo._id !== id);
           setTodoItems(result);
         }
       })
-      .catch();
+      .catch(() => toast.error('Failed to delete todo!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        })
+      );
   }
 
   return (
     // Main Container
     <div className={styles.container}>
+      <ToastContainer/>
       
       {/* Header Field */}
       <h1 className={styles.title}>Tasks</h1>
