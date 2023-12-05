@@ -75,7 +75,7 @@ function App() {
 
       {/* Result Todos Component */}
       {isLoading
-        ? <DotLoader color="#f472b6" cssOverride={{margin: '0 auto'}} />
+        ? <DotLoader color='#f472b6' cssOverride={{margin: '0 auto'}} />
         : ( 
             <AnimatePresence mode='wait'>
               {todoItems.length > 0
